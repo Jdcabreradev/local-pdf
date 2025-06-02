@@ -6,6 +6,8 @@ services:
       - "80:80"
     volumes:
       - ./src/client/:/var/www/html/
+    networks:
+      - app-network
     restart: unless-stopped
 
   server:
@@ -17,5 +19,11 @@ services:
     volumes:
       - ./:/usr/src/app
     command: >
-      sh -c "npm run build && npm start"
+      sh -c "npm install && npm run build && npm start"
+    networks:
+      - app-network
     restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge

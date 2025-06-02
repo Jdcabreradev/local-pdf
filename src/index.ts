@@ -10,20 +10,19 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 1) Middlewares básicos
-app.use(cors());
+app.use(cors({
+  origin: '*', // Puedes limitarlo a 'http://localhost' si quieres
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 2) Sirvo archivos estáticos con otro prefijo (pueva /static/uploads)
-const uploadsFolder = path.join(__dirname, 'backend/uploads');
-console.log('Sirviendo uploads desde:', uploadsFolder);
-app.use('/static/uploads', express.static(uploadsFolder));
-
-// 3) Rutas de API
+// 2) Rutas de API
 app.use('/uploads', uploadsRouter);
 app.use('/chat', chatRouter);
 
-// 4) Error handler
+// 3) Error handler
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   console.error(err);
   if (err instanceof Error) {
@@ -34,7 +33,7 @@ const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 };
 app.use(errorHandler);
 
-// 5) Arrancar servidor
+// 4) Arrancar servidor
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
