@@ -1,0 +1,21 @@
+services:
+  client:
+    image: php:8.4-apache
+    container_name: client
+    ports:
+      - "80:80"
+    volumes:
+      - ./src/client/:/var/www/html/
+    restart: unless-stopped
+
+  server:
+    image: node:22
+    container_name: server
+    working_dir: /usr/src/app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/usr/src/app
+    command: >
+      sh -c "npm run build && npm start"
+    restart: unless-stopped

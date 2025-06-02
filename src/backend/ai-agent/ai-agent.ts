@@ -140,12 +140,14 @@ export const answerPdf = async (
 
   const embeddings = new OllamaEmbeddings({
     model: "nomic-embed-text",
+    baseUrl: "host.docker.internal:11434"
   });
 
   const vectorStore = await MemoryVectorStore.fromDocuments(docs, embeddings);
 
   const llm = new ChatOllama({
     model: "llama3.2",
+    baseUrl: "host.docker.internal:11434"
   });
 
   const prompt = ChatPromptTemplate.fromTemplate(
